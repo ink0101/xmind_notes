@@ -22,18 +22,18 @@
 		arr1.length = 3; // [1, empty × 2]
 		```
 
-	* 稀疏数组
-		* delete 
-		* in
+* 稀疏数组
+	* delete 
+	* in
 
-		```
-		const arr1 = [1,2,3];
-		// delete 和 splice() 方法的不同之处
-		delete arr1[1]; // [1, empty, 3]
-		
-		1 in arr1; // false
-		2 in arr1; //true
-		```
+	```
+	const arr1 = [1,2,3];
+	// delete 和 splice() 方法的不同之处
+	delete arr1[1]; // [1, empty, 3]
+	
+	1 in arr1; // false
+	2 in arr1; //true
+	```
 
 		
 ### 方法介绍
@@ -241,4 +241,7 @@
 
 
 ### 参考链接
+
 [检测数组方法](https://www.w3cplus.com/javascript/array-part-2.html)
+
+[MDN Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
