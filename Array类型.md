@@ -170,6 +170,9 @@
 	ES5 原生支持的方法，确定某个值是否是数组。
 	
 	问题： IE8 之前的版本是不支持的。
+
+[数组检测 More > >](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString)
+
 	
 #### 转换方法
 
@@ -200,9 +203,6 @@
 	
 	![Firefox-toLocalString](./assets/Firefox-toLocalString.png)
 	
-	[数组检测 More > >](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString)
-	
-	
 3. valueOf
 
 	> 返回指定对象的原始值。
@@ -216,7 +216,7 @@
 4. join
 	> 将数组（或类似数组的对象）的所有元素连接到一个字符串中并返回该字符串。
 	
-	注： ** 如果元素是 undefined 或 null，它将被转换为空字符串, NaN 转为字符串。**
+	注： **如果元素是 undefined 或 null，它将被转换为空字符串, NaN 转为字符串。**
 	
 	``` javascript
 	const arr1 = [null, undefined, NaN];
