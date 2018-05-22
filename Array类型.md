@@ -22,20 +22,7 @@
 		arr1.length = 3; // [1, empty × 2]
 		```
 
-* 稀疏数组
-	* delete
-	* in
 
-	``` javascript
-	const arr1 = [1,2,3];
-	// delete 和 splice() 方法的不同之处
-	delete arr1[1]; // [1, empty, 3]
-	
-	1 in arr1; // false
-	2 in arr1; //true
-	```
-
-		
 ### 方法介绍
 
 方法根据功能大概分为以下几类：
@@ -50,13 +37,50 @@
 	// new 关键字可以省略
 	
 	const arr1 = new Array(); // []
+
+	const arr4 = new Array('m', 'n'); // ["m", "n"]
 	
 	// 注：给构造函数传递一个参数的时候，会根据参数的类型，有不同的行为
-	const arr2 = new Array(3); // [empty × 3] 注意这里每一项的值是空
 	const arr3 = new Array('3'); // ['3']
-	
-	const arr4 = new Array('m', 'n'); // ["m", "n"]
+	const arr2 = new Array(3); // [empty × 3] 注意这里每一项的值是空(稀疏数组)
+
 	```
+	
+	* 稀疏数组: 含有空白或者空缺单位的元素。
+		* delete
+		* in
+
+		``` javascript
+		const arr1 = [1,2,3];
+		// delete 和 splice() 方法的不同之处
+		delete arr1[1]; // [1, empty, 3]
+		
+		1 in arr1; // false
+		2 in arr1; //true
+		```
+	
+		 空白单元可能会有出乎意料的行为，比如map()方法和join()方法。
+		
+		``` javascript
+		const arr1 = [1, 2, 3];
+		delete arr1[1];
+		
+		<!--针对空白单元，map方法无法遍历-->
+		const arr2 = arr1.map((item, index) => {return index}); // [0, empty, 2]
+		
+		<!--join方法会假定数组不为空-->
+		arr1.join('*'); // "0**2"
+		
+		<!-- 在创建undefined值的数组时有些奇怪和繁琐，但是结果远比Array(3)更准确可靠。-->
+		Array.apply(0, {length: 4}); // [undefined, undefined, undefined, undefined]
+		
+		<!--优雅的实现-->
+		Array.from({length: 4});
+		[...Array(4)]; // [undefined, undefined, undefined, undefined]
+		
+		```
+		
+		**注意： 空白单元可能会有出乎意料的行为，所以不要创建和使用稀疏数组。**
 
 2. 数组字面量
 
@@ -121,8 +145,8 @@
 	
 	``` javascript
 	const arr1 = [1, 2, 3];
-  Object.prototype.toString.call(arr1) === "[object Array]"; // true
-  
+	Object.prototype.toString.call(arr1) === "[object Array]"; // true
+
 	```
 
 4. isArray
@@ -160,7 +184,7 @@
 	
 	![Firefox-toLocalString](./assets/Firefox-toLocalString.png)
 	
-	[More > >](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString)
+	[数组检测 More > >](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString)
 	
 	
 3. valueOf
@@ -217,15 +241,63 @@
 #### 操作方法
 
 1. concat
+> 创建当前数组的一个副本，然后讲将接收到的参数添加到副本的末尾，返回新构建的数组。
+> concat() 的参数可以是一个或多个数组。
+
 2. slice
+> 基于当前数组的一个或多个项创建一个新的数组。
+> 参数：返回项的起始位置，结束位置（可选）。
+
+**以上两个方法都不会影响原数组。**
+
 3. splice
 
-##### ES6 
+* 删除
+	* 参数：开始位置、删除项数量
+* 插入
+	* 参数：起始位置，0，要插入的项
+* 替换
+	* 参数：起始位置，要删除的项，要插入的项
+
+##### ES6
 
 1. copyWithin
+	> 在当前数组内部，将指定位置的成员复制到其他位置，会覆盖原有成员。
+	
+	* 参数
+		* target（必需）：目标开始位置
+		* start：读取数据开始位置
+		* end： 该位置前停止读取数据
+	
+	``` javascript
+	Array.prototype.copyWithin(target, start = 0, end = this.length)
+	```
 2. fill
-
+	> 使用指定值填充数组
+	* 数组初始化
+	
+	``` javascript
+	new Array(3).fill(7) // [7, 7, 7]
+	```
+	
+	* 参数：
+		* content：填充内容
+		* start：开始位置
+		* end:  到该位置之前结束
+	
+	``` javascript
+	[1,2,3].fill(7, 1, 2); // [1, 7, 3]
+	```
+	
+	注： **如果填充的类型为对象，那么被赋值的是同一个内存的对象。**
+	
 #### 位置方法
+
+参数： 要查找的项，表示查找起点位置的索引（可选）
+
+不同之处： 方向相反。
+
+返回值： 索引，没有找到则返回 -1。采用 === 进行比较。
 
 1. indexOf
 2. lastIndexOf
@@ -233,25 +305,63 @@
 #### 迭代方法
 
 1. every
+	> 遍历数组每一项，都返回true，则返回true。
+
 2. some
+
+	> 遍历数组每一项，任意一项返回true, 则返回true。
+
 3. filter
+	> 遍历数组每一项，返回该函数会返回true的项组成的数组。
+
 4. map
+	> 遍历数组每一项，返回每次函数调用的的结果组成的数组。
+
 5. forEach
+	> 遍历数组每一项，对数组每一项运行函数，没有返回值。
 
 ##### ES6
 
 1. find
+	> 返回第一个符合条件的数组成员。
+	
+	如果没有符合条件的成员，则返回 undefined。
+	
+	* 参数：
+		* 回调函数
+			* 参数
+				* 当前的值
+				* 当前的位置
+				* 原数组
+	
+	``` javascript
+	[1, 5, 10, 15, 20].find(function(value, index, arr) {
+	  return value > 9 && index > 2;
+	})  // 15
+	```	
+
 2. findIndex
+	> 和find() 方法类似，但是返回第一个符合条件的数组成员的位置。
+	
+	如果没有符合条件的成员，就返回 `-1`
+
 3. entries
+	> 键值对的遍历
 4. keys
+	> 键名的遍历
 5. values
+	> 键值的遍历
+
+**以上三个方法都返回遍历器对象。**
 
 #### 缩小方法
 
+参数：函数，作为缩小基础的初始值（可选）
+
+不同：方向相反。
+
 1. reduce
 2. rediceRight
-
-
 
 ### 参考链接
 
@@ -260,3 +370,5 @@
 [MDN - Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
 
 [《ECMAScript 6 入门》](http://es6.ruanyifeng.com/#docs/array)
+
+[创建0-100的数组](https://www.jianshu.com/p/d6f855e5bc5c)
