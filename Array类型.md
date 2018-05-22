@@ -71,7 +71,7 @@
 		<!--join方法会假定数组不为空-->
 		arr1.join('*'); // "0**2"
 		
-		<!-- 在创建undefined值的数组时有些奇怪和繁琐，但是结果远比Array(3)更准确可靠。-->
+		<!-- 在创建 undefined 值的数组时有些奇怪和繁琐，但是结果远比 Array(3) 更准确可靠。-->
 		Array.apply(0, {length: 4}); // [undefined, undefined, undefined, undefined]
 		
 		<!--优雅的实现-->
@@ -96,8 +96,24 @@
 	将类数组对象转变为真正的数组对象。
 	
 	``` javascript
+	<!-- 第一个参数： 类数组对象 -->
 	Array.from('foo'); // ["f", "o", "o"]
+	
+	<!-- 第二个参数： 函数-->
 	Array.from([1, 2, 3], x => x + x); // [2, 4, 6]
+	
+	<!-- 第三个参数： 指定函数内部的this值-->
+	let helper = {     
+		diff: 1,     
+		add(value) {         
+			return value + this.diff;     
+		} 
+	}; 
+	function translate() {     
+		return Array.from(arguments, helper.add, helper); 
+	} 
+	let numbers = translate(1, 2, 3);
+	console.log(numbers); // [2, 3, 4]
 	```
 
 2. of
